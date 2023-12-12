@@ -19,11 +19,11 @@ const Router = createBrowserRouter([
         element: <Coin />,
         children: [
           {
-            path: "price",
+            path: "price", // 자식
             element: <Price />,
           },
           {
-            path: "chart",
+            path: "chart", // 자식
             element: <Chart />,
           },
         ],

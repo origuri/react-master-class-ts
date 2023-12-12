@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import Tabs from "../components/Tabs";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -173,6 +174,8 @@ const Coin = () => {
           </Overview>
         </>
       )}
+      {/* Outlet태그가 chart와 price 컴포넌트로 변경된다. */}
+      <Tabs />
       <Outlet />
     </Container>
   );
