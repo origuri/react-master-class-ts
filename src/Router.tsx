@@ -4,21 +4,34 @@ import Home from "./screens/Home";
 import App from "./App";
 import NotFound from "./screens/NotFoutd";
 import ErrorComponent from "./components/ErrorComponent";
+import User from "./screens/users/User";
+import Followers from "./screens/users/Followers";
 
 // "/" -> 부모, /about -> 자식
 const Router = createBrowserRouter([
   {
-    path: "/",
+    path: "/", // 부모
     element: <App />,
     children: [
       {
-        path: "", // "/" 는 기본으로 깔고 가는 것.
+        path: "", // "/" 는 기본으로 깔고 가는 것., 자식
         element: <Home />,
         errorElement: <ErrorComponent />,
       },
       {
-        path: "about",
+        path: "about", // 자식
         element: <About />,
+      },
+      {
+        // 다이나믹 url, 자식
+        path: "users/:userId",
+        element: <User />,
+        children: [
+          {
+            path: "followers", // users/:userId의 자식
+            element: <Followers />,
+          },
+        ],
       },
     ],
     errorElement: <NotFound />,
