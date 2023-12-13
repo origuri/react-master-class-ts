@@ -1,8 +1,8 @@
+import { ReactQueryDevtools } from "react-query/devtools";
 import { Outlet } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
-function App() {
-  const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
 
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
@@ -71,10 +71,12 @@ a{
 }
   `;
 
+function App() {
   return (
     <>
       <GlobalStyle />
       <Outlet />
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 }
