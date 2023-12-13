@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Tabs from "../components/Tabs";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -130,7 +130,9 @@ const Coin = () => {
     () => fetchCoinInfo(coinId)
   );
   const { isLoading: tickersLoading, data: tickersData } =
-    useQuery<ITickersData>(["ticker", coinId], () => fetchCoinTickers(coinId));
+    useQuery<ITickersData>(["ticker", coinId], () => fetchCoinTickers(coinId), {
+      refetchInterval: 3000, // 3초마다 리페치 됨.
+    });
   // 두 개의 로딩이 true면
   const isLoading = infoLoading && tickersLoading;
   /*
@@ -156,6 +158,11 @@ const Coin = () => {
  */
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : isLoading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name ? state.name : isLoading ? "Loading..." : infoData?.name}
@@ -175,8 +182,8 @@ const Coin = () => {
               <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>price</span>
+              <span>{tickersData?.quotes.USD.price.toFixed(2)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -192,9 +199,11 @@ const Coin = () => {
           </Overview>
         </>
       )}
-      {/* Outlet태그가 chart와 price 컴포넌트로 변경된다. */}
       <Tabs />
-      <Outlet />
+      {/* Outlet태그가 chart와 price 컴포넌트로 변경된다. 
+        객체로 보내야 coinId를 string으로 받을 수 있음
+      */}
+      <Outlet context={{ coinId: coinId }} />
     </Container>
   );
 };

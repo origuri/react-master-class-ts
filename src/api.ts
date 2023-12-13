@@ -4,6 +4,7 @@ const BASE_URL = `https://api.coinpaprika.com/v1`;
 // promise 객체는 비동기 함수
 export async function fetchCoins() {
   const jsonData = await (await fetch(`${BASE_URL}/coins`)).json();
+  console.log("이거 확인->", jsonData);
 
   return jsonData.slice(0, 100);
 }
@@ -13,4 +14,12 @@ export async function fetchCoinInfo(coinId: string) {
 }
 export async function fetchCoinTickers(coinId: string) {
   return await (await fetch(`${BASE_URL}/tickers/${coinId}`)).json();
+}
+
+export async function fetchCoinHistory(coinId: string) {
+  const endDate = Math.floor(Date.now() / 1000);
+  const startDate = endDate - 60 * 60 * 24 * 7;
+  return await (
+    await fetch(`https://ohlcv-api.nomadcoders.workers.dev?coinId=${coinId}`)
+  ).json();
 }
