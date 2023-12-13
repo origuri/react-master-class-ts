@@ -129,7 +129,7 @@ const Coin = () => {
         await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
       ).json();
       setInfo(infoData);
-      setPriceInfo(priceInfo);
+      setPriceInfo(priceData);
       console.log(priceInfo);
 
       setIsLoading(false);

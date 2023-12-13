@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -46,7 +48,7 @@ const CoinImage = styled.img`
   margin-right: 5px;
 `;
 
-interface CoinInterface {
+interface Icoins {
   id: string;
   name: string;
   symbol: string;
@@ -57,7 +59,11 @@ interface CoinInterface {
 }
 
 const Coins = () => {
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
+  // data의 타입을 정해줘야 함.
+  // useQuery는 데이터를 캐시에 저장해주고 있기 때문에 뒤로가기 할 때 새로 fetch하지 않음
+  const { isLoading, data } = useQuery<Icoins[]>("allCoins", fetchCoins);
+
+  /* const [coins, setCoins] = useState<Icoins[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -69,7 +75,7 @@ const Coins = () => {
       setCoins(jsonData.slice(0, 101));
       setIsLoading(false);
     })();
-  }, []);
+  }, []); */
   return (
     <Container>
       <Header>
@@ -79,7 +85,7 @@ const Coins = () => {
         "Loading..."
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.map((coin) => (
             <Coin key={coin.id}>
               {/* outlet을 사용할 경우에 자식 컴포넌트일 경우 앞에 부모 url 생략 가능 
                 state를 사용해서 Link 태그로 정보를 보낼 수 있음. 
