@@ -4,9 +4,8 @@ const BASE_URL = `https://api.coinpaprika.com/v1`;
 // promise 객체는 비동기 함수
 export async function fetchCoins() {
   const jsonData = await (await fetch(`${BASE_URL}/coins`)).json();
-  console.log("이거 확인->", jsonData);
 
-  return jsonData.slice(0, 100);
+  return jsonData.slice(0, 1);
 }
 
 export async function fetchCoinInfo(coinId: string) {

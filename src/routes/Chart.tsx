@@ -18,10 +18,16 @@ interface ICoinHistoryData {
   market_cap: number;
 }
 
+interface IChartDarkProps {
+  isDark: boolean;
+}
+
 function Chart() {
   //const coinId = useOutletContext() as IOutletProps;
   // 부모인 Coin.tsx에서 준 context를 받아서 사용 가능
   const { coinId } = useOutletContext<IOutletProps>();
+  const { isDark } = useOutletContext<IChartDarkProps>();
+  console.log("chart 이거->", isDark);
 
   const { isLoading, data } = useQuery<ICoinHistoryData[]>(
     ["chart", coinId],
@@ -40,12 +46,13 @@ function Chart() {
           series={[
             {
               name: "price",
+
               data: data?.map((price) => Number(price.close)) ?? [], // undefined면 빈 문자열 반환하겠다.
             },
           ]}
           options={{
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             chart: {
               height: 300,

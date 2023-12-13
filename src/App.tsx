@@ -1,6 +1,8 @@
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Outlet } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { darkTheme, lightTheme } from "./theme";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -72,11 +74,17 @@ a{
   `;
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+  const toggleDark = () => setIsDark((current) => !current);
   return (
     <>
-      <GlobalStyle />
-      <Outlet />
-      <ReactQueryDevtools initialIsOpen={true} />
+      {/* themeProvider가 App(RouterProvider)를 감싸고 있기 때문에 App.js의
+  globalCss에 theme을 적용할 수 있음.  */}
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Outlet context={{ toggleDark, isDark }} />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   );
 }
