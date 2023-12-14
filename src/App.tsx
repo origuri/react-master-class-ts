@@ -1,10 +1,5 @@
-import { ReactQueryDevtools } from "react-query/devtools";
-import { Outlet } from "react-router-dom";
-import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { darkTheme, lightTheme } from "./theme";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atoms";
+import { createGlobalStyle } from "styled-components";
+import TodoList from "./ToDoList";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -76,17 +71,10 @@ a{
   `;
 
 function App() {
-  // isDarkAtom의 default value가 bool이므로 isDark의 타입도 bool이 됨
-  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
-      {/* themeProvider가 App(RouterProvider)를 감싸고 있기 때문에 App.js의
-  globalCss에 theme을 적용할 수 있음.  */}
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <Outlet />
-        <ReactQueryDevtools initialIsOpen={true} />
-      </ThemeProvider>
+      <GlobalStyle />
+      <TodoList />
     </>
   );
 }
