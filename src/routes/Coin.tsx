@@ -116,9 +116,7 @@ const Description = styled.p`
 `;
 
 type TParams = { coinId: string };
-interface IChartDarkProps {
-  isDark: boolean;
-}
+interface IChartDarkProps {}
 const Coin = () => {
   // 타입을 명시하고 싶으면 이렇게 해도 되는데 v6부터는 알아서 잡아줌
   // useQuery를 사용할 거면 타입을 직접 명시 하던가 인터페이스가 아닌 타입로 명시하던가
@@ -128,8 +126,7 @@ const Coin = () => {
 
   // router v6부터는 제네릭을 지원하지 않아서 as로 사용해야 함
   const { state } = useLocation() as ILocation;
-  const { isDark } = useOutletContext<IChartDarkProps>();
-  console.log("coins 이거->", isDark);
+
   /* useQuery는 고유의 아이디를 가지고 있어야 함
      고유 아이디는 배열로 가지고 있기 때문에 두 개의 키로 pk를 만들면 해결 가능
   */
@@ -214,7 +211,7 @@ const Coin = () => {
       {/* Outlet태그가 chart와 price 컴포넌트로 변경된다. 
         객체로 보내야 coinId를 string으로 받을 수 있음
       */}
-      <Outlet context={{ coinId: coinId, isDark }} />
+      <Outlet context={{ coinId: coinId }} />
     </Container>
   );
 };

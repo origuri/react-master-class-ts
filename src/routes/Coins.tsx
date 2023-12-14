@@ -3,6 +3,8 @@ import { Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -71,18 +73,14 @@ const dummyData = [
   },
 ];
 
-interface ICoinOutletContext {
-  toggleDark: () => void;
-}
-
 const Coins = () => {
   // data의 타입을 정해줘야 함.
   // useQuery는 데이터를 캐시에 저장해주고 있기 때문에 뒤로가기 할 때 새로 fetch하지 않음
   const { isLoading, data } = useQuery<Icoins[]>("allCoins", fetchCoins);
 
-  // 다크모드를 하기 위한 여정
-  const { toggleDark } = useOutletContext<ICoinOutletContext>();
-  console.log("이거->", toggleDark);
+  // useState의 setter와 같은 역할을 해줌
+  const setIsDark = useSetRecoilState(isDarkAtom);
+  const switchIsDarkAtom = () => setIsDark((prev) => !prev);
 
   /* const [coins, setCoins] = useState<Icoins[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,13 +102,13 @@ const Coins = () => {
       </Helmet>
       <Header>
         <Title>코코코인</Title>
-        <button onClick={toggleDark}>다크모드</button>
+        <button onClick={switchIsDarkAtom}>다크모드</button>
       </Header>
       {isLoading ? (
         "Loading..."
       ) : (
         <CoinsList>
-          {dummyData?.map((coin) => (
+          {data?.map((coin) => (
             <Coin key={coin.id}>
               {/* outlet을 사용할 경우에 자식 컴포넌트일 경우 앞에 부모 url 생략 가능 
                 state를 사용해서 Link 태그로 정보를 보낼 수 있음. 

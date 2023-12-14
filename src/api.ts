@@ -5,7 +5,7 @@ const BASE_URL = `https://api.coinpaprika.com/v1`;
 export async function fetchCoins() {
   const jsonData = await (await fetch(`${BASE_URL}/coins`)).json();
 
-  return jsonData.slice(0, 1);
+  return jsonData.slice(0, 100);
 }
 
 export async function fetchCoinInfo(coinId: string) {

@@ -2,6 +2,8 @@ import { useQuery } from "react-query";
 import { useOutletContext } from "react-router-dom";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 interface IOutletProps {
   coinId: string;
@@ -18,16 +20,13 @@ interface ICoinHistoryData {
   market_cap: number;
 }
 
-interface IChartDarkProps {
-  isDark: boolean;
-}
-
 function Chart() {
   //const coinId = useOutletContext() as IOutletProps;
   // 부모인 Coin.tsx에서 준 context를 받아서 사용 가능
   const { coinId } = useOutletContext<IOutletProps>();
-  const { isDark } = useOutletContext<IChartDarkProps>();
-  console.log("chart 이거->", isDark);
+
+  // isDarkAtom의 default value가 bool이므로 isDark의 타입도 bool이 됨
+  const isDark = useRecoilValue(isDarkAtom);
 
   const { isLoading, data } = useQuery<ICoinHistoryData[]>(
     ["chart", coinId],
