@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
-import { toDoState } from "../Atoms/todoAtoms";
+import { Category, toDoState } from "../Atoms/todoAtoms";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
@@ -20,7 +20,7 @@ function CreateToDo() {
   const onSubmit = (data: ITodoForm) => {
     setValue("toDo", "");
     setToDos((oldToDos) => [
-      { text: data.toDo, category: "TO_DO", id: Date.now() },
+      { text: data.toDo, category: Category.TO_DO, id: Date.now() },
       ...oldToDos,
     ]);
     //console.log(data);
