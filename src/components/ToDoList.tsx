@@ -24,7 +24,9 @@ function ToDoList() {
   //useForm을 사용해서 라디오 버튼의 value 확인
   const chooseCategory = watch("categoryRadio");
   // set 해주면 selector에서 필터할 때 동적으로 사용함.
-  setCategory(chooseCategory);
+  if (chooseCategory !== undefined) {
+    setCategory(chooseCategory);
+  }
 
   console.log(category);
 

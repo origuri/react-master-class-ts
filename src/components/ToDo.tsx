@@ -2,7 +2,7 @@ import { useSetRecoilState } from "recoil";
 import { Category, IToDo, toDoState } from "../Atoms/todoAtoms";
 import { Button, ListItem, ListItemText } from "@mui/material";
 
-function ToDo({ text, id, category }: IToDo) {
+function ToDo({ text, id, category, isModify }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
 
   /*  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,7 +40,12 @@ function ToDo({ text, id, category }: IToDo) {
       // 현재 todos에서 findIndex를 해서 해당 todo의 index번호를 가져옴
       const targetIndex = oldToDos.findIndex((todo) => todo.id === id);
       // 교체할 todo
-      const newToDo = { text, category: nowCategory, id };
+      const newToDo = {
+        text,
+        category: nowCategory,
+        id,
+        isModify: false,
+      };
       // 0부터 선택한 인덱스 전까지 자름
       const frontArr = oldToDos.slice(0, targetIndex);
       // 타겟 이후 부터 자름
@@ -52,9 +57,34 @@ function ToDo({ text, id, category }: IToDo) {
     });
   };
 
+  /*  const onDelete = () => {
+    setToDos((oldTodos) => {
+      const targetIndex = oldTodos.findIndex((todo) => todo.id === id);
+      console.log("타겟 =>", targetIndex);
+
+      const newToDos = [...oldTodos];
+      newToDos.splice(targetIndex, 1);
+      return newToDos;
+    });
+  }; */
+  const onDelete = () => {
+    setToDos((oldTodos) => {
+      const newToDos = [...oldTodos];
+
+      return newToDos.filter((todo) => todo.id !== id);
+    });
+  };
+  let modifyFlag = false;
+  const onModify = () => {
+    modifyFlag = true;
+
+    console.log(id, modifyFlag);
+  };
+
   return (
     <ListItem alignItems="flex-start" key={id}>
-      <ListItemText primary={text} />
+      {modifyFlag ? "true" : "false"}
+      <ListItemText primary={text} onClick={onModify} />
       {category !== Category.TO_DO && (
         <Button
           variant="contained"
@@ -87,6 +117,15 @@ function ToDo({ text, id, category }: IToDo) {
           DONE
         </Button>
       )}
+      <Button
+        variant="contained"
+        color="inherit"
+        size="small"
+        onClick={onDelete}
+        name="Delete"
+      >
+        Delete
+      </Button>
     </ListItem>
   );
 }
