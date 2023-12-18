@@ -1,11 +1,9 @@
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { Category, IToDo, toDoState } from "../Atoms/todoAtoms";
-import { Button, List, ListItem, ListItemText } from "@mui/material";
-import React from "react";
+import { Button, ListItem, ListItemText } from "@mui/material";
 
-function ToDo() {
-  const [toDos, setToDos] = useRecoilState(toDoState);
-  console.log(toDos);
+function ToDo({ text, id, category }: IToDo) {
+  const setToDos = useSetRecoilState(toDoState);
 
   /*  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const {
@@ -36,12 +34,7 @@ function ToDo() {
     });
   }; */
 
-  const onClick = (
-    nowCategory: IToDo["category"],
-    id: IToDo["id"],
-    text: IToDo["text"]
-  ) => {
-    console.log(nowCategory, id, text);
+  const onClick = (nowCategory: IToDo["category"]) => {
     // prev => !prev랑 같은 형태
     setToDos((oldToDos) => {
       // 현재 todos에서 findIndex를 해서 해당 todo의 index번호를 가져옴
@@ -60,49 +53,41 @@ function ToDo() {
   };
 
   return (
-    <div>
-      {toDos.length !== 0 ? (
-        <List sx={{ width: "100%", maxWidth: 360, bgcolor: "#ecf0f1" }}>
-          {toDos.map((toDo) => (
-            <ListItem alignItems="flex-start" key={toDo.id}>
-              <ListItemText primary={toDo.text} />
-              {toDo.category !== Category.TO_DO && (
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={() => onClick(Category.TO_DO, toDo.id, toDo.text)}
-                  name={Category.TO_DO}
-                >
-                  TODO
-                </Button>
-              )}
-              {toDo.category !== Category.DOING && (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  onClick={() => onClick(Category.DOING, toDo.id, toDo.text)}
-                  name={Category.DOING}
-                >
-                  DOING
-                </Button>
-              )}
-              {toDo.category !== Category.DONE && (
-                <Button
-                  variant="contained"
-                  color="error"
-                  size="small"
-                  onClick={() => onClick(Category.DONE, toDo.id, toDo.text)}
-                  name={Category.DONE}
-                >
-                  DONE
-                </Button>
-              )}
-            </ListItem>
-          ))}
-        </List>
-      ) : null}
-    </div>
+    <ListItem alignItems="flex-start" key={id}>
+      <ListItemText primary={text} />
+      {category !== Category.TO_DO && (
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => onClick(Category.TO_DO)}
+          name={Category.TO_DO}
+        >
+          TODO
+        </Button>
+      )}
+      {category !== Category.DOING && (
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          onClick={() => onClick(Category.DOING)}
+          name={Category.DOING}
+        >
+          DOING
+        </Button>
+      )}
+      {category !== Category.DONE && (
+        <Button
+          variant="contained"
+          color="error"
+          size="small"
+          onClick={() => onClick(Category.DONE)}
+          name={Category.DONE}
+        >
+          DONE
+        </Button>
+      )}
+    </ListItem>
   );
 }
 
