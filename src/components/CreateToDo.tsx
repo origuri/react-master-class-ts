@@ -33,8 +33,8 @@ function CreateToDo() {
           {...register("toDo", {
             required: "todo는 필수 입니다.",
             minLength: {
-              value: 3,
-              message: "3자 이상 입력 요망",
+              value: 1,
+              message: "1자 이상 입력 요망",
             },
           })}
           placeholder="write your to do"
