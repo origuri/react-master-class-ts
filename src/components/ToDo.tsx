@@ -1,9 +1,16 @@
 import { useSetRecoilState } from "recoil";
 import { Category, IToDo, toDoState } from "../Atoms/todoAtoms";
 import { Button, ListItem, ListItemText } from "@mui/material";
+import { useCallback, useState } from "react";
+import ModifyToDo from "./ModifyToDo";
 
-function ToDo({ text, id, category, isModify }: IToDo) {
+function ToDo({ text, id, category }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
+  const [isModify, setModfiy] = useState(false);
+
+  const onModify = useCallback(() => {
+    setModfiy((prev) => !prev);
+  }, [isModify]);
 
   /*  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const {
@@ -74,58 +81,52 @@ function ToDo({ text, id, category, isModify }: IToDo) {
       return newToDos.filter((todo) => todo.id !== id);
     });
   };
-  let modifyFlag = false;
-  const onModify = () => {
-    modifyFlag = true;
-
-    console.log(id, modifyFlag);
-  };
 
   return (
     <ListItem alignItems="flex-start" key={id}>
-      {modifyFlag ? "true" : "false"}
-      <ListItemText primary={text} onClick={onModify} />
-      {category !== Category.TO_DO && (
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => onClick(Category.TO_DO)}
-          name={Category.TO_DO}
-        >
-          TODO
-        </Button>
+      {isModify ? (
+        <ModifyToDo
+          onModify={onModify}
+          text={text}
+          id={id}
+          category={category}
+        />
+      ) : (
+        <>
+          <ListItemText primary={text} onClick={onModify} />
+          {category !== Category.DOING && (
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              onClick={() => onClick(Category.DOING)}
+              name={Category.DOING}
+            >
+              DOING
+            </Button>
+          )}
+          {category !== Category.DONE && (
+            <Button
+              variant="contained"
+              color="error"
+              size="small"
+              onClick={() => onClick(Category.DONE)}
+              name={Category.DONE}
+            >
+              DONE
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            color="inherit"
+            size="small"
+            onClick={onDelete}
+            name="Delete"
+          >
+            Delete
+          </Button>
+        </>
       )}
-      {category !== Category.DOING && (
-        <Button
-          variant="contained"
-          color="secondary"
-          size="small"
-          onClick={() => onClick(Category.DOING)}
-          name={Category.DOING}
-        >
-          DOING
-        </Button>
-      )}
-      {category !== Category.DONE && (
-        <Button
-          variant="contained"
-          color="error"
-          size="small"
-          onClick={() => onClick(Category.DONE)}
-          name={Category.DONE}
-        >
-          DONE
-        </Button>
-      )}
-      <Button
-        variant="contained"
-        color="inherit"
-        size="small"
-        onClick={onDelete}
-        name="Delete"
-      >
-        Delete
-      </Button>
     </ListItem>
   );
 }

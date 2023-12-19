@@ -20,7 +20,6 @@ export interface IToDo {
   text: string;
   id: number;
   category: Category.TO_DO | Category.DOING | Category.DONE; // 카테고리는 string 타입의 3가지만 들어올 수 있음.
-  isModify: boolean;
 }
 
 export const categoryState = atom({

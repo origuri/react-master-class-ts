@@ -21,7 +21,7 @@ function CreateToDo() {
   const onSubmit = (data: ITodoForm) => {
     setValue("toDo", "");
     setToDos((oldToDos) => [
-      { text: data.toDo, category: category, id: Date.now(), isModify: false },
+      { text: data.toDo, category: category, id: Date.now() },
       ...oldToDos,
     ]);
     //console.log(data);
